@@ -12,7 +12,9 @@ public class EpsilonRobot {
 
     public void initialize(LinearOpMode opMode){
         for(Subsytem subsystem : subsystems) {
-            subsystem.initialize(opMode, this);
+            if(subsystem.active()) {
+                subsystem.initialize(opMode, this);
+            }
         }
     }
 }
