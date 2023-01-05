@@ -3,15 +3,34 @@ package Epsilon.Subsystems;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Gamepad;
 
-public class Drivetrain {
+import Epsilon.EpsilonRobot;
+import Epsilon.Subsytem;
+
+public class Drivetrain implements Subsytem {
 
     public DcMotor frontLeft;
     public DcMotor frontRight;
     public DcMotor backLeft;
     public DcMotor backRight;
 
-    public void initialize(LinearOpMode opMode){
+    public boolean active() {
+        return true;
+    }
+
+    public void teleOpMovement(Gamepad gamepad) {
+        double yPower = gamepad.left_stick_y;
+        double xPower = gamepad.left_stick_x;
+        double turn = gamepad.right_stick_x;
+
+        frontLeft.setPower(yPower - xPower + turn);
+        backLeft.setPower(yPower + xPower + turn);
+        frontRight.setPower(yPower + xPower  - turn);
+        backRight.setPower(yPower - xPower - turn);
+    }
+
+    public void initialize(LinearOpMode opMode, EpsilonRobot robot){
         //instantiating the motors on the hardware map
         frontLeft = opMode.hardwareMap.dcMotor.get("frontLeft");
         frontRight = opMode.hardwareMap.dcMotor.get("frontRight");
@@ -35,4 +54,6 @@ public class Drivetrain {
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
     }
+
+
 }
