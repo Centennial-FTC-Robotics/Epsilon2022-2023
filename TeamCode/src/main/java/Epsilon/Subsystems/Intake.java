@@ -5,9 +5,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import Epsilon.EpsilonRobot;
-import Epsilon.Subsytem;
+import Epsilon.Subsystem;
 
-public class Intake implements Subsytem {
+public class Intake implements Subsystem {
 
     public DcMotor fourBar;
     public Servo claw;
