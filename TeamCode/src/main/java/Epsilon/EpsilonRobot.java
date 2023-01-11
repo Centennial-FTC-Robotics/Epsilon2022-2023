@@ -6,12 +6,12 @@ import Epsilon.Subsystems.Drivetrain;
 public class EpsilonRobot {
 
     public Drivetrain drivetrain = new Drivetrain();
-    public Subsytem[] subsystems = new Subsytem[] {
+    public Subsystem[] subsystems = new Subsystem[] {
       drivetrain
     };
 
     public void initialize(LinearOpMode opMode){
-        for(Subsytem subsystem : subsystems) {
+        for(Subsystem subsystem : subsystems) {
             if(subsystem.active()) {
                 subsystem.initialize(opMode, this);
             }
