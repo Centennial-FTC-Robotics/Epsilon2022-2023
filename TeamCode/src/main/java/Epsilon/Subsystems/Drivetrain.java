@@ -6,9 +6,9 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import Epsilon.EpsilonRobot;
-import Epsilon.Subsytem;
+import Epsilon.Subsystem;
 
-public class Drivetrain implements Subsytem {
+public class Drivetrain implements Subsystem {
 
     public DcMotor frontLeft;
     public DcMotor frontRight;
