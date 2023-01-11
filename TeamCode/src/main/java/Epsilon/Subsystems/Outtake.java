@@ -14,6 +14,16 @@ public class Outtake implements Subsystem {
     public Servo leftServo;
     public Servo rightServo;
 
+    public enum OuttakeState {
+        EXTENDED, EXTENDING, RETRACTING, RETRACTED
+    }
+    public OuttakeState currentState;
+    public int targetHeight =
+
+    public final int bottomJunction = 0; // THESE VALUES
+    public final int middleJunction= 100; // ARE JUST
+    public final int highJunction = 200; // PLACEHOLDER
+
     public boolean active() {
         return true;
     }
@@ -28,7 +38,9 @@ public class Outtake implements Subsystem {
         leftPulley.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightPulley.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        currentState = OuttakeState.RETRACTED;
     }
+
 
     public double PID(double targetPos, DcMotor motor) {
         double kP = 0.01;
