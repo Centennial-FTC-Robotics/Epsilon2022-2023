@@ -2,6 +2,7 @@ package Epsilon.Subsystems;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import Epsilon.EpsilonRobot;
@@ -39,5 +40,10 @@ public class Intake implements Subsystem {
     @Override
     public boolean active() {
         return true;
+    }
+
+    @Override
+    public void teleOpUpdate(Gamepad gamepad1, Gamepad gamepad2) {
+
     }
 }

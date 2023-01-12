@@ -16,7 +16,7 @@ public class MainTeleOp extends LinearOpMode {
         waitForStart();
 
         while(opModeIsActive()){
-            robot.drivetrain.teleOpMovement(gamepad1);
+            robot.drivetrain.teleOpUpdate(gamepad1, gamepad2);
         }
     }
 }
