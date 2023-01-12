@@ -18,11 +18,13 @@ public class Outtake implements Subsystem {
         EXTENDED, EXTENDING, RETRACTING, RETRACTED
     }
     public OuttakeState currentState;
-    public int targetHeight =
+    public int targetHeight;
 
     public final int bottomJunction = 0; // THESE VALUES
     public final int middleJunction= 100; // ARE JUST
     public final int highJunction = 200; // PLACEHOLDER
+
+
 
     public boolean active() {
         return true;
@@ -41,6 +43,13 @@ public class Outtake implements Subsystem {
         currentState = OuttakeState.RETRACTED;
     }
 
+    public void extendPlatform() {
+        // TODO: Write code to extend platform
+    }
+
+    public void retractPlatform() {
+        // TODO: Write code to retract platform
+    }
 
     public double PID(double targetPos, DcMotor motor) {
         double kP = 0.01;
