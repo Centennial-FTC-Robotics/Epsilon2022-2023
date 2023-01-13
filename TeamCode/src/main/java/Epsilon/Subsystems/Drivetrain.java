@@ -19,10 +19,10 @@ public class Drivetrain implements Subsystem {
         return true;
     }
 
-    public void teleOpMovement(Gamepad gamepad) {
-        double yPower = gamepad.left_stick_y;
-        double xPower = gamepad.left_stick_x;
-        double turn = gamepad.right_stick_x;
+    public void teleOpUpdate(Gamepad gamepad1, Gamepad gamepad2) {
+        double yPower = gamepad1.left_stick_y;
+        double xPower = gamepad1.left_stick_x;
+        double turn = gamepad1.right_stick_x;
 
         frontLeft.setPower(yPower - xPower + turn);
         backLeft.setPower(yPower + xPower + turn);
