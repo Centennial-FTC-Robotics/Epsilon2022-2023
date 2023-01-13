@@ -19,13 +19,14 @@ public class MainTeleOp extends LinearOpMode {
 
         while(opModeIsActive()){
             robot.drivetrain.teleOpUpdate(gamepad1, gamepad2);
+            robot.intake.teleOpUpdate(gamepad1, gamepad2);
 
-            robot.outtake.leftPulley.setPower(0.3*gamepad2.left_stick_y);
-            robot.outtake.rightPulley.setPower(0.3*gamepad2.left_stick_y);
+        //    robot.outtake.leftPulley.setPower(0.2*gamepad2.left_stick_y);
+        //    robot.outtake.rightPulley.setPower(0.2*gamepad2.left_stick_y);
 
-            telemetry.addData("leftPulley encoder value: ", robot.outtake.leftPulley.getCurrentPosition());
-            telemetry.addData("rightPulley encoder value: ", robot.outtake.rightPulley.getCurrentPosition());
-            telemetry.update();
+        //    telemetry.addData("leftPulley encoder value: ", robot.outtake.leftPulley.getCurrentPosition());
+        //    telemetry.addData("rightPulley encoder value: ", robot.outtake.rightPulley.getCurrentPosition());
+        //    telemetry.update();
 
         }
     }

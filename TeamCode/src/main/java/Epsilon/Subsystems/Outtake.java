@@ -37,7 +37,7 @@ public class Outtake implements Subsystem {
 
 
     public boolean active() {
-        return true;
+        return false;
     }
 
     public void initialize(LinearOpMode opMode, EpsilonRobot robot) {
@@ -47,11 +47,11 @@ public class Outtake implements Subsystem {
         leftServo = opMode.hardwareMap.servo.get("leftOuttakeServo");
         rightServo = opMode.hardwareMap.servo.get("rightOuttakeServo");
 
-        leftPulley.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rightPulley.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftPulley.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+        rightPulley.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
 
-        leftPulley.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightPulley.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftPulley.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        rightPulley.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
 
         leftPulley.setTargetPosition(0);
         rightPulley.setTargetPosition(0);
@@ -59,10 +59,11 @@ public class Outtake implements Subsystem {
         leftPulley.setTargetPositionTolerance(TOLERANCE);
         rightPulley.setTargetPositionTolerance(TOLERANCE);
 
-        leftPulley.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightPulley.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftPulley.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+        rightPulley.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
 
-
+  //      leftPulley.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+   //     rightPulley.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
 
 
 

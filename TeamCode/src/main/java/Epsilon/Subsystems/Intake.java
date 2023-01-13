@@ -10,40 +10,48 @@ import Epsilon.Subsystem;
 
 public class Intake implements Subsystem {
 
-    public DcMotor fourBar;
-    public Servo claw;
+    public Servo fourBar;
+    public Servo grabber;
 
     @Override
     public void initialize(LinearOpMode opMode, EpsilonRobot robot) {
-        DcMotor fourBar = opMode.hardwareMap.dcMotor.get("fourBar");
-        Servo claw = opMode.hardwareMap.servo.get("claw");
+        fourBar = opMode.hardwareMap.servo.get("fourBar");
+        grabber = opMode.hardwareMap.servo.get("grabber");
 
-        fourBar.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     public void suckStuff(boolean state){
         if(state){
-            fourBar.setPower(1);
+            fourBar.setPosition(0.5);
         } else {
-            fourBar.setPower(0);
+            fourBar.setPosition(0.25);
         }
     }
 
     public void grab(){
-        claw.setPosition(1);
+        grabber.setPosition(0.5);
     }
 
     public void release(){
-        claw.setPosition(0);
+        grabber.setPosition(0.25);
     }
 
     @Override
     public boolean active() {
-        return false;
+        return true;
     }
 
     @Override
     public void teleOpUpdate(Gamepad gamepad1, Gamepad gamepad2) {
-
+        if(gamepad2.left_bumper){
+            grab();
+        } else {
+            release();
+        }
+        if(gamepad2.right_bumper) {
+            suckStuff(true);
+        } else {
+            suckStuff(false);
+        }
     }
 }
