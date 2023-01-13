@@ -27,6 +27,8 @@ public class Outtake implements Subsystem {
     public PlatformState platformState;
     public int targetHeight;
 
+    public final int TOLERANCE = 10;
+
     public final int RESET = 0;
     public final int BOTTOM = 100; // THESE VALUES
     public final int MIDDLE = 150; // ARE JUST
@@ -53,6 +55,9 @@ public class Outtake implements Subsystem {
 
         leftPulley.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightPulley.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        leftPulley.setTargetPositionTolerance(TOLERANCE);
+        rightPulley.setTargetPositionTolerance(TOLERANCE);
 
 
 
@@ -96,24 +101,17 @@ public class Outtake implements Subsystem {
             slidesState = SlidesState.MOVING;
         }
 
+        if(slidesState == SlidesState.MOVING &&
+                targetHeight != rightPulley.getTargetPosition()) {
+            rightPulley.setTargetPosition(targetHeight);
+            leftPulley.setTargetPosition(targetHeight);
+        }
 
+        if(slidesState == SlidesState.MOVING &&
+                !leftPulley.isBusy() && !rightPulley.isBusy()) {
+            slidesState = SlidesState.HOLDING;
+        }
 
 
     }
-
-    public double PID(double targetPos, DcMotor motor) {
-        double kP = 0.01;
-        double power;
-        double error = targetPos - motor.getCurrentPosition();
-        power = error * kP;
-        return power;
-    }
-
-    // test commit
-
-
-
-
-
-
 }
