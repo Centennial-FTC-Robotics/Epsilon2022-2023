@@ -53,11 +53,16 @@ public class Outtake implements Subsystem {
         leftPulley.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightPulley.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        leftPulley.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        rightPulley.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftPulley.setTargetPosition(0);
+        rightPulley.setTargetPosition(0);
 
         leftPulley.setTargetPositionTolerance(TOLERANCE);
         rightPulley.setTargetPositionTolerance(TOLERANCE);
+
+        leftPulley.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightPulley.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+
 
 
 

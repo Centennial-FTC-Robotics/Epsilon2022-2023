@@ -39,7 +39,7 @@ public class Intake implements Subsystem {
 
     @Override
     public boolean active() {
-        return true;
+        return false;
     }
 
     @Override

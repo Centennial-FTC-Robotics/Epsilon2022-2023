@@ -20,9 +20,9 @@ public class Drivetrain implements Subsystem {
     }
 
     public void teleOpUpdate(Gamepad gamepad1, Gamepad gamepad2) {
-        double yPower = gamepad1.left_stick_y;
-        double xPower = gamepad1.left_stick_x;
-        double turn = gamepad1.right_stick_x;
+        double yPower = 0.7*gamepad1.left_stick_y;
+        double xPower = 0.7*gamepad1.left_stick_x;
+        double turn = 0.7*gamepad1.right_stick_x;
 
         frontLeft.setPower(yPower - xPower + turn);
         backLeft.setPower(yPower + xPower + turn);
@@ -96,8 +96,8 @@ public class Drivetrain implements Subsystem {
         backRight = opMode.hardwareMap.dcMotor.get("backRight");
 
         //reverse two motors
-        frontRight.setDirection(DcMotorSimple.Direction.REVERSE);
-        backRight.setDirection(DcMotorSimple.Direction.REVERSE);
+        frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
 
         //set motor runmode
         frontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
