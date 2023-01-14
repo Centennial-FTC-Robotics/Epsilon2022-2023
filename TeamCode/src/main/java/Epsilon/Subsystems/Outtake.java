@@ -23,6 +23,9 @@ public class Outtake implements Subsystem {
         EXTENDED, RETRACTED
     }
 
+    public boolean firstServoInputDone = false;
+    public double servoVal;
+
     public SlidesState slidesState;
     public PlatformState platformState;
     public int targetHeight;
@@ -37,7 +40,7 @@ public class Outtake implements Subsystem {
 
 
     public boolean active() {
-        return false;
+        return true;
     }
 
     public void initialize(LinearOpMode opMode, EpsilonRobot robot) {
@@ -73,50 +76,67 @@ public class Outtake implements Subsystem {
     }
 
     public void extendPlatform() {
-        // TODO: Write code to extend platform
+        if(!firstServoInputDone) {
+            firstServoInputDone = true;
+            leftServo.setPosition(0);
+            servoVal = 0;
+        } else {
+            servoVal = Math.min(1, servoVal+.001);
+            leftServo.setPosition(servoVal);
+        }
+
+        platformState = PlatformState.EXTENDED;
     }
 
     public void retractPlatform() {
-        // TODO: Write code to retract platform
+        if(!firstServoInputDone) {
+            firstServoInputDone = true;
+            leftServo.setPosition(1);
+            servoVal = 1;
+        } else {
+            servoVal = Math.max(0, servoVal-.001);
+            leftServo.setPosition(servoVal);
+        }
+        platformState = PlatformState.RETRACTED;
     }
 
     @Override
     public void teleOpUpdate(Gamepad gamepad1, Gamepad gamepad2) {
 
         // Handle platform input
-        if(gamepad1.right_bumper && platformState == PlatformState.RETRACTED) {
+        if(gamepad2.dpad_up) {
             platformState = PlatformState.EXTENDED;
             extendPlatform();
-        } else if(gamepad1.left_bumper && platformState == PlatformState.EXTENDED) {
+        } else if(gamepad2.dpad_down) {
             platformState = PlatformState.RETRACTED;
             retractPlatform();
         }
 
         // Handle slides input
-        if(gamepad1.a && slidesState == SlidesState.HOLDING) {
-            targetHeight = RESET;
-            slidesState = SlidesState.MOVING;
-        } else if(gamepad1.x && slidesState == SlidesState.HOLDING) {
-            targetHeight = HIGH;
-            slidesState = SlidesState.MOVING;
-        } else if(gamepad1.y && slidesState == SlidesState.HOLDING) {
-            targetHeight = MIDDLE;
-            slidesState = SlidesState.MOVING;
-        } else if(gamepad1.b && slidesState == SlidesState.HOLDING) {
-            targetHeight = BOTTOM;
-            slidesState = SlidesState.MOVING;
-        }
-
-        if(slidesState == SlidesState.MOVING &&
-                targetHeight != rightPulley.getTargetPosition()) {
-            rightPulley.setTargetPosition(targetHeight);
-            leftPulley.setTargetPosition(targetHeight);
-        }
-
-        if(slidesState == SlidesState.MOVING &&
-                !leftPulley.isBusy() && !rightPulley.isBusy()) {
-            slidesState = SlidesState.HOLDING;
-        }
+//        if(gamepad1.a && slidesState == SlidesState.HOLDING) {
+//            targetHeight = RESET;
+//            slidesState = SlidesState.MOVING;
+//        } else if(gamepad1.x && slidesState == SlidesState.HOLDING) {
+//            targetHeight = HIGH;
+//            slidesState = SlidesState.MOVING;
+//        } else if(gamepad1.y && slidesState == SlidesState.HOLDING) {
+//            targetHeight = MIDDLE;
+//            slidesState = SlidesState.MOVING;
+//        } else if(gamepad1.b && slidesState == SlidesState.HOLDING) {
+//            targetHeight = BOTTOM;
+//            slidesState = SlidesState.MOVING;
+//        }
+//
+//        if(slidesState == SlidesState.MOVING &&
+//                targetHeight != rightPulley.getTargetPosition()) {
+//            rightPulley.setTargetPosition(targetHeight);
+//            leftPulley.setTargetPosition(targetHeight);
+//        }
+//
+//        if(slidesState == SlidesState.MOVING &&
+//                !leftPulley.isBusy() && !rightPulley.isBusy()) {
+//            slidesState = SlidesState.HOLDING;
+//        }
 
 
     }

@@ -20,13 +20,24 @@ public class MainTeleOp extends LinearOpMode {
         while(opModeIsActive()){
             robot.drivetrain.teleOpUpdate(gamepad1, gamepad2);
             robot.intake.teleOpUpdate(gamepad1, gamepad2);
+            robot.outtake.teleOpUpdate(gamepad1, gamepad2);
 
-        //    robot.outtake.leftPulley.setPower(0.2*gamepad2.left_stick_y);
-        //    robot.outtake.rightPulley.setPower(0.2*gamepad2.left_stick_y);
+            /*
+            if(gamepad2.right_bumper){
+                robot.intake.fourBar.setPosition(0.25);
+            } else {
+                robot.intake.fourBar.setPosition(0.5);
+            }
+            */
 
-        //    telemetry.addData("leftPulley encoder value: ", robot.outtake.leftPulley.getCurrentPosition());
-        //    telemetry.addData("rightPulley encoder value: ", robot.outtake.rightPulley.getCurrentPosition());
-        //    telemetry.update();
+            robot.outtake.leftPulley.setPower(-0.2*gamepad2.left_stick_y);
+            robot.outtake.rightPulley.setPower(0.2*gamepad2.left_stick_y);
+
+//            telemetry.addData("leftPulley encoder value: ", robot.outtake.leftPulley.getCurrentPosition());
+//            telemetry.addData("rightPulley encoder value: ", robot.outtake.rightPulley.getCurrentPosition());
+
+            telemetry.addData("grabber stage: ", robot.intake.grabberClosed);
+            telemetry.update();
 
         }
     }

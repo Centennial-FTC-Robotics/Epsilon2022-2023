@@ -12,28 +12,32 @@ public class Intake implements Subsystem {
 
     public Servo fourBar;
     public Servo grabber;
+    public boolean grabberClosed = true;
 
     @Override
     public void initialize(LinearOpMode opMode, EpsilonRobot robot) {
         fourBar = opMode.hardwareMap.servo.get("fourBar");
         grabber = opMode.hardwareMap.servo.get("grabber");
-
     }
 
-    public void suckStuff(boolean state){
-        if(state){
-            fourBar.setPosition(0.5);
-        } else {
-            fourBar.setPosition(0.25);
+    public void suckStuff(boolean pressed){
+        if(grabberClosed) {
+            if (pressed) {
+                fourBar.setPosition(0.4);
+            } else {
+                fourBar.setPosition(0.75);
+            }
         }
     }
 
     public void grab(){
-        grabber.setPosition(0.5);
+        grabber.setPosition(0.8);
+        grabberClosed = true;
     }
 
     public void release(){
-        grabber.setPosition(0.25);
+        grabber.setPosition(0.6);
+        grabberClosed = false;
     }
 
     @Override
@@ -44,14 +48,10 @@ public class Intake implements Subsystem {
     @Override
     public void teleOpUpdate(Gamepad gamepad1, Gamepad gamepad2) {
         if(gamepad2.left_bumper){
-            grab();
-        } else {
             release();
-        }
-        if(gamepad2.right_bumper) {
-            suckStuff(true);
         } else {
-            suckStuff(false);
+            grab();
+            suckStuff(gamepad2.right_bumper);
         }
     }
 }

@@ -22,7 +22,7 @@ public class Drivetrain implements Subsystem {
     public void teleOpUpdate(Gamepad gamepad1, Gamepad gamepad2) {
         double yPower = 0.7*gamepad1.left_stick_y;
         double xPower = 0.7*gamepad1.left_stick_x;
-        double turn = 0.7*gamepad1.right_stick_x;
+        double turn = -0.4*gamepad1.right_stick_x;
 
         frontLeft.setPower(yPower - xPower + turn);
         backLeft.setPower(yPower + xPower + turn);
