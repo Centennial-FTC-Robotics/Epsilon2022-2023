@@ -29,6 +29,24 @@ public class Drivetrain implements Subsystem {
         frontRight.setPower(yPower + xPower  - turn);
         backRight.setPower(yPower - xPower - turn);
     }
+
+    public void park() throws InterruptedException {
+        double yPower = .2;
+        double xPower = 0;
+        double turn = 0;
+
+        frontLeft.setPower(yPower - xPower + turn);
+        backLeft.setPower(yPower + xPower + turn);
+        frontRight.setPower(yPower + xPower  - turn);
+        backRight.setPower(yPower - xPower - turn);
+        Thread.sleep(6000);
+        frontLeft.setPower(0);
+        backLeft.setPower(0);
+        frontRight.setPower(0);
+        backRight.setPower(0);
+
+    }
+
     public enum MoveType {
         DRIVE,
         STRAFE,
