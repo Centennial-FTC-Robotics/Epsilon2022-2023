@@ -39,7 +39,7 @@ public class Drivetrain implements Subsystem {
         backLeft.setPower(yPower + xPower + turn);
         frontRight.setPower(yPower + xPower  - turn);
         backRight.setPower(yPower - xPower - turn);
-        Thread.sleep(6000);
+        Thread.sleep(12000);
         frontLeft.setPower(0);
         backLeft.setPower(0);
         frontRight.setPower(0);
