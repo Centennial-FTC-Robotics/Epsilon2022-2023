@@ -11,16 +11,14 @@ import Epsilon.EpsilonRobot;
 public class MainTeleOp extends LinearOpMode {
 
     @Override
-    public void runOpMode() throws InterruptedException {
+    public void runOpMode() {
         EpsilonRobot robot = new EpsilonRobot();
         robot.initialize(this);
 
         waitForStart();
 
         while(opModeIsActive()){
-            robot.drivetrain.teleOpUpdate(gamepad1, gamepad2);
-            robot.intake.teleOpUpdate(gamepad1, gamepad2);
-            robot.outtake.teleOpUpdate(gamepad1, gamepad2);
+            robot.teleOpUpdate(gamepad1, gamepad2);
 
             /*
             if(gamepad2.right_bumper){
