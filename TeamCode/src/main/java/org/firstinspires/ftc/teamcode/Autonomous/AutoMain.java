@@ -10,12 +10,12 @@ import Epsilon.Subsystems.Drivetrain;
 @Autonomous
 public class AutoMain extends LinearOpMode {
     @Override
-    public void runOpMode() throws InterruptedException {
+    public void runOpMode() {
         EpsilonRobot robot = new EpsilonRobot();
         robot.initialize(this);
 
         waitForStart();
 
-        robot.drivetrain.park();
+
     }
 }
