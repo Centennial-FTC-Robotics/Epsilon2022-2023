@@ -16,6 +16,11 @@ public class AutoMain extends LinearOpMode {
 
         waitForStart();
 
+        while(opModeIsActive()) {
+            telemetry.addData("April Tag: ", robot.camera.scanParking());
+            telemetry.update();
+        }
+
 
     }
 }
