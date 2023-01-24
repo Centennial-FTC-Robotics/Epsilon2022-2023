@@ -2,14 +2,17 @@ package Epsilon.Subsystems;
 
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
 
+import com.acmerobotics.dashboard.FtcDashboard;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.hardware.HardwareDevice;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
+import org.openftc.easyopencv.OpenCvInternalCamera2;
 
 import java.util.ArrayList;
 
@@ -49,17 +52,20 @@ public class Camera implements Subsystem {
 
     @Override
     public void initialize(LinearOpMode opMode, EpsilonRobot robot) {
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
+
+        int cameraMonitorViewId = opMode.hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", opMode.hardwareMap.appContext.getPackageName());
+
+        camera = OpenCvCameraFactory.getInstance().createInternalCamera2(OpenCvInternalCamera2.CameraDirection.BACK, cameraMonitorViewId);
         aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
 
-        camera.setPipeline(aprilTagDetectionPipeline);
+
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
         {
             @Override
             public void onOpened()
             {
-                camera.startStreaming(800,448, OpenCvCameraRotation.UPRIGHT);
+                camera.startStreaming(1280,720, OpenCvCameraRotation.UPRIGHT);
+                camera.setPipeline(aprilTagDetectionPipeline);
             }
 
             @Override
@@ -78,19 +84,18 @@ public class Camera implements Subsystem {
 
     // 1 2 or 3 depending on parkign station
     public int scanParking() {
-        while(true) {
-            ArrayList<AprilTagDetection> detections = aprilTagDetectionPipeline.getLatestDetections();
-            if (detections.size() != 0) {
-                for(AprilTagDetection tag : detections)
-                {
-                    for(int i = 0; i < tag_ids.length; i++) {
-                        if(tag_ids[i] == tag.id) {
-                            return i+1;
-                        }
+        ArrayList<AprilTagDetection> detections = aprilTagDetectionPipeline.getLatestDetections();
+        if (detections.size() != 0) {
+            for(AprilTagDetection tag : detections)
+            {
+                for(int i = 0; i < tag_ids.length; i++) {
+                    if(tag_ids[i] == tag.id) {
+                        return i+1;
                     }
                 }
             }
         }
+        return 0;
     }
 
     @Override
