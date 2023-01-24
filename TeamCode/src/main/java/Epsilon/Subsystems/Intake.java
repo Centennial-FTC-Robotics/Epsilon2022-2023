@@ -2,6 +2,7 @@ package Epsilon.Subsystems;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -10,24 +11,24 @@ import Epsilon.Subsystem;
 
 public class Intake implements Subsystem {
 
-    public Servo fourBar;
+    public DcMotorEx fourBar;
     public Servo grabber;
     public boolean grabberClosed = true;
 
     @Override
     public void initialize(LinearOpMode opMode, EpsilonRobot robot) {
-        fourBar = opMode.hardwareMap.servo.get("fourBar");
-        grabber = opMode.hardwareMap.servo.get("grabber");
+        fourBar = opMode.hardwareMap.get(DcMotorEx.class, "fourBar");
+//        grabber = opMode.hardwareMap.servo.get("grabber");
     }
 
     public void suckStuff(boolean pressed){
-        if(grabberClosed) {
-            if (pressed) {
-                fourBar.setPosition(0.4);
-            } else {
-                fourBar.setPosition(0.75);
-            }
-        }
+//        if(grabberClosed) {
+//            if (pressed) {
+//                fourBar.setPosition(0.4);
+//            } else {
+//                fourBar.setPosition(0.75);
+//            }
+//        }
     }
 
     public void grab(){
@@ -42,7 +43,7 @@ public class Intake implements Subsystem {
 
     @Override
     public boolean active() {
-        return true;
+        return false;
     }
 
     @Override
@@ -51,7 +52,7 @@ public class Intake implements Subsystem {
             release();
         } else {
             grab();
-            suckStuff(gamepad2.right_bumper);
+//            suckStuff(gamepad2.right_bumper);
         }
     }
 }

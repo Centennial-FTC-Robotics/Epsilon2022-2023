@@ -16,7 +16,7 @@ public class Drivetrain implements Subsystem {
     public DcMotor backRight;
 
     public boolean active() {
-        return true;
+        return false;
     }
 
     public void teleOpUpdate(Gamepad gamepad1, Gamepad gamepad2) {
