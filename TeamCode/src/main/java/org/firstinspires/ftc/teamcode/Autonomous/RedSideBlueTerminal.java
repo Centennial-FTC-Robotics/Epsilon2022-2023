@@ -15,6 +15,6 @@ public class RedSideBlueTerminal extends LinearOpMode {
 
         waitForStart();
 
-        robot.drivetrain.Move(0.5, 20, Drivetrain.MoveType.DRIVE, this);
+        //robot.drivetrain.Move(0.5, 20, Drivetrain.MoveType.DRIVE, this);
     }
 }

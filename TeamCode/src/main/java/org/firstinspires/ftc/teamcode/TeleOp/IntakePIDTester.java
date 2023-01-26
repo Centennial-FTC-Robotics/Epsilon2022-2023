@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.arcrobotics.ftclib.controller.PIDController;
+import com.arcrobotics.ftclib.hardware.ServoEx;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -21,6 +22,7 @@ public class IntakePIDTester extends LinearOpMode {
     public final double ticks_in_degree = 537.7/360;
 
     private DcMotorEx fourBar;
+    private ServoEx grabber;
 
     @Override
     public void runOpMode() throws InterruptedException {

@@ -1,5 +1,9 @@
 package Epsilon.Subsystems;
 
+import com.arcrobotics.ftclib.drivebase.MecanumDrive;
+import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.hardware.RevIMU;
+import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -10,16 +14,28 @@ import Epsilon.Subsystem;
 
 public class Drivetrain implements Subsystem {
 
-    public DcMotor frontLeft;
-    public DcMotor frontRight;
-    public DcMotor backLeft;
-    public DcMotor backRight;
+    public RevIMU imu;
+    MecanumDrive drive;
+
+    public Motor frontLeft;
+    public Motor frontRight;
+    public Motor backLeft;
+    public Motor backRight;
 
     public boolean active() {
-        return false;
+        return true;
     }
 
     public void teleOpUpdate(Gamepad gamepad1, Gamepad gamepad2) {
+        GamepadEx driverOp = new GamepadEx(gamepad1);
+        drive.driveFieldCentric(
+                driverOp.getLeftX(),
+                driverOp.getLeftY(),
+                driverOp.getRightX(),
+                imu.getRotation2d().getDegrees(),
+                false
+        );
+        /*
         double yPower = 0.7*gamepad1.left_stick_y;
         double xPower = 0.7*gamepad1.left_stick_x;
         double turn = -0.4*gamepad1.right_stick_x;
@@ -28,8 +44,12 @@ public class Drivetrain implements Subsystem {
         backLeft.setPower(yPower + xPower + turn);
         frontRight.setPower(yPower + xPower  - turn);
         backRight.setPower(yPower - xPower - turn);
+
+        */
+
     }
 
+    /*
     public void park() throws InterruptedException {
         double yPower = .2;
         double xPower = 0;
@@ -105,8 +125,25 @@ public class Drivetrain implements Subsystem {
 
         }
     }
-
+    */
     public void initialize(LinearOpMode opMode, EpsilonRobot robot){
+
+        //initializing using FTC library motor class
+        frontLeft = new Motor(opMode.hardwareMap, "frontLeft", 537.6, 340);
+        frontRight = new Motor(opMode.hardwareMap, "frontRight", 537.6, 340);
+        backLeft = new Motor(opMode.hardwareMap, "backLeft", 537.6, 340);
+        backRight = new Motor(opMode.hardwareMap, "backRight", 537.6, 340);
+
+        drive = new MecanumDrive(
+                frontLeft, frontRight, backLeft, backRight
+        );
+
+        //IMU stuff
+        imu = new RevIMU(opMode.hardwareMap, "imu");
+        imu.init();
+        imu.reset();
+
+        /*
         //instantiating the motors on the hardware map
         frontLeft = opMode.hardwareMap.dcMotor.get("frontLeft");
         frontRight = opMode.hardwareMap.dcMotor.get("frontRight");
@@ -128,7 +165,7 @@ public class Drivetrain implements Subsystem {
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
+        */
     }
 
 

@@ -10,7 +10,9 @@ import com.arcrobotics.ftclib.hardware.RevIMU;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @TeleOp
 public class IMUTester extends LinearOpMode {
@@ -20,11 +22,17 @@ public class IMUTester extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
+        Motor[] motors = {
+                new Motor(hardwareMap, "frontLeft", 537.6, 340),
+                new Motor(hardwareMap, "frontRight", 537.6, 340),
+                new Motor(hardwareMap, "backLeft", 537.6, 340),
+                new Motor(hardwareMap, "backRight", 537.6, 340)
+        };
+    //    for(Motor motor : motors) {
+    //        motor.setZeroPowerBehavior(Motor.ZeroPowerBehavior.BRAKE);
+    //    }
        MecanumDrive drive = new MecanumDrive(
-               new Motor(hardwareMap, "frontLeft", 537.6, 340),
-               new Motor(hardwareMap, "frontRight", 537.6, 340),
-               new Motor(hardwareMap, "backLeft", 537.6, 340),
-               new Motor(hardwareMap, "backRight", 537.6, 340)
+               motors[0], motors[1], motors[2], motors[3]
        );
 
         imu = new RevIMU(hardwareMap, "imu");
