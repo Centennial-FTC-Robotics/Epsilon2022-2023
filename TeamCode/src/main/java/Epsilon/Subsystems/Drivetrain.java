@@ -46,9 +46,9 @@ public class Drivetrain implements Subsystem {
             );
         } else if(driveType == DriveType.ROBOT_CENTRIC) {
             drive.driveRobotCentric(
-                    driverOp.getLeftX(),
-                    driverOp.getLeftY(),
-                    driverOp.getRightX(),
+                    driverOp.getLeftX()*.7,
+                    driverOp.getLeftY()*.7,
+                    driverOp.getRightX()*.5,
                     false
             );
         }

@@ -35,7 +35,6 @@ public class Intake implements Subsystem {
 
     public DcMotorEx fourBar;
     public Servo grabber;
-    public boolean grabberClosed = true;
 
     public boolean lastLeftBumper = false;
     public boolean lastRightBumper = false;
@@ -102,11 +101,12 @@ public class Intake implements Subsystem {
         if(armState == ArmState.EXTENDING || armState == ArmState.RETRACTING) {
             PID();
             if(controller.atSetPoint()) {
-                fourBar.setPower(0);
                 Thread.sleep(300);
                 if(armState == ArmState.EXTENDING) {
+                    fourBar.setPower(.2);
                     setGrabber(GrabberFullOpen);
                 } else if(armState == ArmState.RETRACTING) {
+                    fourBar.setPower(0);
                     setGrabber(GrabberSafeOpen);
                 }
 
@@ -117,7 +117,19 @@ public class Intake implements Subsystem {
             if(gamepad2.left_bumper && !lastLeftBumper) {
                 armOut();
             } else if(gamepad2.a && !lastA) {
-                setGrabber(GrabberClosed);
+                if(armTarget == ArmOut) {
+                    if(grabberTarget == GrabberClosed) {
+                        setGrabber(GrabberFullOpen);
+                    } else {
+                        setGrabber(GrabberClosed);
+                    }
+                } else if(armTarget == ArmIn) {
+                    if(grabberTarget == GrabberClosed) {
+                        setGrabber(GrabberSafeOpen);
+                    } else {
+                        setGrabber(GrabberClosed);
+                    }
+                }
             } else if(gamepad2.right_bumper && !lastRightBumper) {
                 armIn();
             }
@@ -128,7 +140,7 @@ public class Intake implements Subsystem {
         lastA = gamepad2.a;
 
         opMode.telemetry.addData("grabberTarget", grabberTarget);
-        opMode.telemetry.addData("grabberActual", fourBar.getCurrentPosition());
+        opMode.telemetry.addData("armActual", fourBar.getCurrentPosition());
         opMode.telemetry.addData("armTarget", armTarget);
         opMode.telemetry.addData("atTarget", controller.atSetPoint());
 
