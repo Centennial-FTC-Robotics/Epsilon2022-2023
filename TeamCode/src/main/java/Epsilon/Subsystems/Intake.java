@@ -13,7 +13,7 @@ import Epsilon.Subsystem;
 public class Intake implements Subsystem {
 
     public PIDController controller;
-    public static double p = 0.008, i = 0.07, d = 0.00083;
+    public static double p = 0.008, i = 0.07, d = 0.00068;
     public static double f = 0.34;
 
     public static final int targetOut = 285;
@@ -31,6 +31,8 @@ public class Intake implements Subsystem {
     public void initialize(LinearOpMode opMode, EpsilonRobot robot) {
         controller = new PIDController(p, i, d);
         fourBar = opMode.hardwareMap.get(DcMotorEx.class, "fourBar");
+        fourBar.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        fourBar.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         grabber = opMode.hardwareMap.servo.get("grabber");
     }
 
@@ -55,12 +57,12 @@ public class Intake implements Subsystem {
     }
 
     public void grab(){
-        grabber.setPosition(0.8);
+        grabber.setPosition(0.35);
         grabberClosed = true;
     }
 
     public void release(){
-        grabber.setPosition(0.6);
+        grabber.setPosition(0.25);
         grabberClosed = false;
     }
 
@@ -72,10 +74,9 @@ public class Intake implements Subsystem {
     @Override
     public void teleOpUpdate(Gamepad gamepad1, Gamepad gamepad2) {
         if(gamepad2.left_bumper){
-            //pivot out
             pivot(targetOut);
             release();
-        } else{
+        } else if(gamepad2.right_bumper){
             //pivot in
             grab();
             pivot(targetIn);
