@@ -35,8 +35,6 @@ public class Outtake implements Subsystem {
     public final int MIDDLE = 150; // ARE JUST
     public final int HIGH = 200; // PLACEHOLDER
 
-    public double verticalPosition;
-
     public boolean active() {
         return true;
     }
@@ -47,26 +45,26 @@ public class Outtake implements Subsystem {
 
         outtakePulley.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
         outtakePulley.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-        outtakePulley.setTargetPosition(0);
-        outtakePulley.setTargetPositionTolerance(TOLERANCE);
-        outtakePulley.setMode(DcMotorEx.RunMode.RUN_TO_POSITION);
+        //outtakePulley.setTargetPosition(0);
+        //outtakePulley.setTargetPositionTolerance(TOLERANCE);
+        outtakePulley.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
 
         slidesState = SlidesState.HOLDING;
         platformState = PlatformState.RETRACTED;
     }
 
     public void extendPlatform() {
-        platform.setPosition(0.5);
+        platform.setPosition(0.9);
         platformState = PlatformState.EXTENDED;
     }
 
     public void retractPlatform() {
-       platform.setPosition(0);
+       platform.setPosition(0.5);
        platformState = PlatformState.RETRACTED;
     }
 
     public double holdMotor(double targetPosition){
-        double kP = 0.01;   //constant, may need tuning
+        double kP = 0.03;   //constant, may need tuning
         double power;
         double error = targetPosition - outtakePulley.getCurrentPosition();
         power = error * kP;
@@ -78,15 +76,13 @@ public class Outtake implements Subsystem {
         //manual outtake
         if(gamepad2.dpad_up){
             outtakePulley.setPower(-0.5);
-            verticalPosition = outtakePulley.getCurrentPosition();
         } else if(gamepad2.dpad_down){
             outtakePulley.setPower(0.5);
-            verticalPosition = outtakePulley.getCurrentPosition();
         } else {
             outtakePulley.setPower(holdMotor(outtakePulley.getCurrentPosition()));
         }
 
-        if(gamepad1.b){
+        if(gamepad2.b){
             extendPlatform();
         } else {
             retractPlatform();
