@@ -3,6 +3,7 @@ package Epsilon.Subsystems;
 import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.arcrobotics.ftclib.gamepad.GamepadEx;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareDevice;
@@ -79,7 +80,7 @@ public class Camera implements Subsystem {
 
     @Override
     public boolean active() {
-        return true;
+        return false;
     }
 
     // 1 2 or 3 depending on parkign station
@@ -98,6 +99,5 @@ public class Camera implements Subsystem {
         return 0;
     }
 
-    @Override
     public void teleOpUpdate(Gamepad gamepad1, Gamepad gamepad2) {}
 }
