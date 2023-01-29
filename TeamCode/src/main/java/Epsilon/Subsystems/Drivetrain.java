@@ -2,8 +2,12 @@ package Epsilon.Subsystems;
 
 import com.arcrobotics.ftclib.drivebase.MecanumDrive;
 import com.arcrobotics.ftclib.gamepad.GamepadEx;
+import com.arcrobotics.ftclib.gamepad.GamepadKeys;
 import com.arcrobotics.ftclib.hardware.RevIMU;
 import com.arcrobotics.ftclib.hardware.motors.Motor;
+import com.arcrobotics.ftclib.kinematics.wpilibkinematics.MecanumDriveKinematics;
+import com.arcrobotics.ftclib.kinematics.wpilibkinematics.MecanumDriveOdometry;
+import com.arcrobotics.ftclib.kinematics.wpilibkinematics.MecanumDriveWheelSpeeds;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -36,6 +40,10 @@ public class Drivetrain implements Subsystem {
 
     public void teleOpUpdate(Gamepad gamepad1, Gamepad gamepad2) {
         GamepadEx driverOp = new GamepadEx(gamepad1);
+
+        double mult = Math.min(1, 1.35-gamepad1.right_trigger);
+
+
         if(driveType == DriveType.FIELD_CENTRIC) {
             drive.driveFieldCentric(
                     driverOp.getLeftX(),
@@ -45,10 +53,24 @@ public class Drivetrain implements Subsystem {
                     false
             );
         } else if(driveType == DriveType.ROBOT_CENTRIC) {
+            double forwardDpad = 0;
+            double strafeDpad = 0;
+            if(gamepad1.dpad_up) {
+                forwardDpad+=1;
+            }
+            if(gamepad1.dpad_down) {
+                forwardDpad-=1;
+            }
+            if(gamepad1.dpad_left) {
+                strafeDpad -=1;
+            }
+            if(gamepad1.dpad_right) {
+                strafeDpad +=1;
+            }
             drive.driveRobotCentric(
-                    driverOp.getLeftX()*.7,
-                    driverOp.getLeftY()*.7,
-                    driverOp.getRightX()*.5,
+                    (driverOp.getLeftX()+strafeDpad)*.7*mult,
+                    (driverOp.getLeftY()+forwardDpad)*.7*mult,
+                    driverOp.getRightX()*.5*mult,
                     false
             );
         }
@@ -56,6 +78,68 @@ public class Drivetrain implements Subsystem {
     }
 
     public void park() throws InterruptedException {
+
+        int position = robot.camera.scanParking();
+        if(position == 1){
+            drive.driveRobotCentric(
+                    0,
+                    -0.45,
+                    0,
+                    false
+            );
+            Thread.sleep(1250);
+            drive.driveRobotCentric(
+                    0.45,
+                    0,
+                    0,
+                    false
+            );
+            Thread.sleep(1250);
+            drive.driveRobotCentric(
+                    0,
+                    0,
+                    0,
+                    false
+            );
+        } else if (position == 3){
+            drive.driveRobotCentric(
+                    0,
+                    -0.45,
+                    0,
+                    false
+            );
+            Thread.sleep(1250);
+            drive.driveRobotCentric(
+                    -0.45,
+                    0,
+                    0,
+                    false
+            );
+            Thread.sleep(1400);
+            drive.driveRobotCentric(
+                    0,
+                    0,
+                    0,
+                    false
+            );
+        } else {
+            drive.driveRobotCentric(
+                    0,
+                    -0.45,
+                    0,
+                    false
+            );
+            Thread.sleep(1300);
+            drive.driveRobotCentric(
+                    0,
+                    0,
+                    0,
+                    false
+            );
+        }
+    }
+
+    public void driveForward(int inches){
 
     }
 
@@ -72,7 +156,6 @@ public class Drivetrain implements Subsystem {
         drive = new MecanumDrive(
                 frontLeft, frontRight, backLeft, backRight
         );
-
     }
 
 

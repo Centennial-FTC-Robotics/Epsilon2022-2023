@@ -16,12 +16,12 @@ public class Intake implements Subsystem {
     public static double p = 0.008, i = 0.07, d = 0.00068;
     public static double f = 0.34;
 
-    public static final int ArmOut = 290;
+    public static final int ArmOut = 280;
     public static final int ArmIn = 0;
 
     public final double GrabberFullOpen = .2;
     public final double GrabberSafeOpen = .3;
-    public final double GrabberClosed = .4;
+    public final double GrabberClosed = .35;
 
     public int armTarget = ArmIn;
     public double grabberTarget = GrabberSafeOpen;
@@ -41,10 +41,12 @@ public class Intake implements Subsystem {
     public boolean lastA = false;
 
     public LinearOpMode opMode;
+    public EpsilonRobot robot;
 
     @Override
-    public void initialize(LinearOpMode om, EpsilonRobot robot) {
+    public void initialize(LinearOpMode om, EpsilonRobot ro) {
         opMode = om;
+        robot = ro;
 
         controller = new PIDController(p, i, d);
         controller.setTolerance(20);
@@ -101,12 +103,13 @@ public class Intake implements Subsystem {
         if(armState == ArmState.EXTENDING || armState == ArmState.RETRACTING) {
             PID();
             if(controller.atSetPoint()) {
+                fourBar.setPower(0);
                 Thread.sleep(300);
                 if(armState == ArmState.EXTENDING) {
-                    fourBar.setPower(.2);
+                    //fourBar.setPower(0);
                     setGrabber(GrabberFullOpen);
                 } else if(armState == ArmState.RETRACTING) {
-                    fourBar.setPower(0);
+                    //fourBar.setPower(0);
                     setGrabber(GrabberSafeOpen);
                 }
 
@@ -130,7 +133,7 @@ public class Intake implements Subsystem {
                         setGrabber(GrabberClosed);
                     }
                 }
-            } else if(gamepad2.right_bumper && !lastRightBumper) {
+            } else if(gamepad2.right_bumper && !lastRightBumper ) {
                 armIn();
             }
         }

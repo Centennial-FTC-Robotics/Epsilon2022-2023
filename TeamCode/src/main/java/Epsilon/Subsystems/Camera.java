@@ -80,7 +80,7 @@ public class Camera implements Subsystem {
 
     @Override
     public boolean active() {
-        return false;
+        return true;
     }
 
     // 1 2 or 3 depending on parkign station

@@ -64,7 +64,7 @@ public class Outtake implements Subsystem {
     }
 
     public double holdMotor(double targetPosition){
-        double kP = 0.03;   //constant, may need tuning
+        double kP = 0.05;   //constant, may need tuning
         double power;
         double error = targetPosition - outtakePulley.getCurrentPosition();
         power = error * kP;
@@ -75,8 +75,17 @@ public class Outtake implements Subsystem {
     public void teleOpUpdate(Gamepad gamepad1, Gamepad gamepad2) {
         //manual outtake
         if(gamepad2.dpad_up){
-            outtakePulley.setPower(-0.5);
+            if(gamepad2.right_trigger > 0){
+                outtakePulley.setPower(-0.3);
+            } else {
+                outtakePulley.setPower(-0.5);
+            }
         } else if(gamepad2.dpad_down){
+            if(gamepad2.right_trigger > 0){
+                outtakePulley.setPower(0.3);
+            } else {
+                outtakePulley.setPower(0.5);
+            }
             outtakePulley.setPower(0.5);
         } else {
             outtakePulley.setPower(holdMotor(outtakePulley.getCurrentPosition()));
